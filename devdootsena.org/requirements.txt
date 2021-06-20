@@ -1,0 +1,10 @@
+Flask
+jwt
+pycrypto
+pycryptodome
+pycryptodomex
+facebook-sdk
+tweepy
+WTForms
+Flask-Mail
+Pyrebase

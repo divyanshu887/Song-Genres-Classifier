@@ -1,0 +1,115 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+
+<div class="container" style="background-color:white; padding: 2%; margin-top: 1%; margin-bottom: 2%;">
+         
+    <br>
+
+
+
+    <table class="tab">
+      <thead>
+        <tr>
+          <th>S/N</th>
+          <th>Issue Subject</th>
+          <th>Date</th>
+          <th>Issue</th>
+          <th>Status</th>
+          <th>Archive</th>
+        </tr>
+      </thead>
+      <tbody id="volTable">
+        {% set val=namespace(value=0) %}
+        {% for issue in issues %}
+          {% set val.value=val.value+1 %}
+          <tr id="my_issue">
+            <td>{{ val.value }}</td>
+            <td>{{ issues[issue]['issue_subject'] }}</td>
+            <td>{{ issues[issue]['date'] }}</td>
+            <td>
+              <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal{{ loop.index }}">
+                View
+              </button>
+              
+              <!-- Modal -->
+              <div class="modal fade" id="exampleModal{{ loop.index }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel"> {{ issues[issue]['issue_subject'] }} </h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body" style="text-align: left;">
+                      {{ issues[issue]['issue'] }}
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td>
+              {% if issues[issue]['status'] %}
+              <form action="" method="" enctype="multipart/form-data">
+                <button class="btn btn-danger btn-sm">Solved</button>
+              </form>
+              {% else %}
+                <form action="/delete_raised_request/{{ issue }}" method="POST" enctype="multipart/form-data">
+                  <button class="btn btn-danger btn-sm">Unsolved </button>
+                </form>
+              {% endif %}
+            </td>
+          
+
+            <td>
+              <form action="/archive_raised_request/{{ issue }}" method="POST" enctype="multipart/form-data">
+              <button class="btn btn-danger btn-sm">Archive</button>
+            </form>
+            </td>
+
+            <td>{{ issues[issue]['status'] }}</td>
+            <td>{{ issues[issue]['is_archive'] }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+
+<!--===========================================================================-->
+
+  
+    </div>
+
+  <script>
+    let t_body = document.getElementById('volTable');
+    let v_info=t_body.getElementsByTagName('tr');
+    var valuee=0;
+    for (var i=0 ; i<v_info.length ; i++)
+    {
+      var t_ss=v_info[i].getElementsByTagName('td')[6];
+      var t_arr=v_info[i].getElementsByTagName('td')[7];
+      var t_ss2=(t_ss.textContent||t_ss.innerHTML);
+      var is_archive=(t_arr.textContent||t_arr.innerHTML);
+      valuee=valuee+1;
+      if(is_archive==1)
+      {
+        valuee=valuee-1;
+        v_info[i].style.display="none";
+      }
+      if(t_ss2==1) 
+      {
+        v_info[i].style.backgroundColor="#90ee90";
+      }
+      v_info[i].getElementsByTagName('td')[0].innerHTML=valuee;
+      v_info[i].getElementsByTagName('td')[6].style.display = 'none'
+      v_info[i].getElementsByTagName('td')[7].style.display = 'none'
+    }
+  </script>
+
+{% endblock %}
+

@@ -1,0 +1,52 @@
+{% extends 'signup-login-layout.html' %}
+
+{% block body %}
+
+{% from "includes/_formhelpers.html" import render_field %}
+
+
+
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+
+<form action="/become_volunteer" method="POST" enctype="multipart/form-data">
+
+    <div class="ovf">
+      <div class="wrapper">
+        {% include 'includes/_messages.html' %}
+        <div class="title">
+          Volunteer Registration Form
+        </div>
+          <div class="form">
+    
+            <div class="inputfield">
+              <label>Email Address </label>
+              <input type="email" class="input" name="email" maxlength="60" required>
+            </div> 
+    
+            <div class="inputfield">
+              <label>City </label>
+              <input type="text" class="input" name="city" maxlength="60" required>
+            </div> 
+
+            <div class="inputfield">
+              <label>Pin-Code </label>
+              <input type="text" class="input" name="pin" maxlength="20" value="000000">
+            </div>
+    
+            <div class="inputfield">
+              <label>Profession </label>
+              <input type="text" class="input" name="Profession" maxlength="80" required>
+            </div> 
+         
+    
+            <div class="inputfield">
+              <input id="submit_btn" type="submit" value="Register" class="btn">
+            </div>
+          </div>
+      </div>
+    </div>
+
+  </form>
+
+
+{% endblock %}
