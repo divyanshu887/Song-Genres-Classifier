@@ -19,9 +19,11 @@
             <a class="nav-link" href="/#contus">Contact Us</a>
           </li>
         {% endif %}
+        {% if this_User_num == admin_number %} 
         <li class="nav-item">
           <a class="nav-link" href="/volunteer_list">Volunteers</a>
         </li>
+        {% endif %}
         <li class="nav-item">
           <a class="nav-link" href="/blogs">Blogs</a>
         </li>

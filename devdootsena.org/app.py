@@ -98,10 +98,10 @@ def send_email(msg):
 class signupForm(Form):
     country_code = StringField('Country Code', [
         validators.DataRequired(),
-        validators.Length(min=3, max=3)],default= '+91') 
+        validators.Length(min=3, max=4)],default= '+91') 
     mob_num = StringField('Mobile Number', [
         validators.DataRequired(),
-        validators.Length(min=10, max=10)
+        validators.Length(min=8, max=10)
     ])
     name = StringField('Name', [validators.Length(min=1, max=50)])
     password = PasswordField('Password', [
@@ -495,6 +495,9 @@ def become_volunteer():
         city = f_data['city']
         pin = f_data['pin']
         Profession = f_data['Profession']
+        BloodGroup = f_data.get('BloodGroup')
+        Gender = f_data.get('Gender')
+        helpway = f_data.getlist('helpway')
 
         Volunteers = db.child("Volunteers").get().val()
 
@@ -522,7 +525,10 @@ def become_volunteer():
             "city": city,
             "date":t_date,
             "pin_code":pin,
-            "Profession": Profession
+            "Profession": Profession,
+            "BloodGroup":BloodGroup,
+            "Gender":Gender,
+            "helpway":helpway
         }
         print("hiii")
         db.child("Volunteers").push(data)
@@ -569,8 +575,8 @@ def raise_request():
 
         message = f"Subject : {issue_subject}\n\n Issue : {issue}\n\n City : {city}\n Contact : {session['mob_num']}"
 
-        flag1 = post_fb(message)
-        flag2 = post_tweet(message)
+        flag1 = True#post_fb(message)
+        flag2 = True#post_tweet(message)
 
         db.child("Users/"+session['user_id']+"/raised_requests").push(data)
 
@@ -604,8 +610,11 @@ def my_raised_request():
         this_User =session['username']
         this_User_num=session['mob_num']
     issues = db.child("Users/"+session['user_id']+"/raised_requests").get().val()
-    return render_template("my_raised_request.html", this_User = this_User  , this_User_num=this_User_num, admin_number=admin_number ,issues=issues)
-
+    if(issues!=None):
+        return render_template("my_raised_request.html", this_User = this_User  , this_User_num=this_User_num,admin_number=admin_number ,issues=issues)
+    else:
+        flash('you have not raised any issues yet!!', 'warning')
+        return redirect(url_for("index"))
 
 ####################################################################################### Delet my raised request
 
