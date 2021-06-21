@@ -1,0 +1,103 @@
+{% extends 'signup-login-layout.html' %}
+
+{% block body %}
+
+
+{% from "includes/_formhelpers.html" import render_field %}
+
+
+
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+
+
+<form tabindex="502" method="POST" action="/signup">
+  <div class="ovf">
+    <div class="wrapper">
+      {% include 'includes/_messages.html' %}
+      <div class="title">
+        Signup
+      </div>
+      <div class="form">
+
+        <div class="inputfield">
+          {{render_field(form.country_code, class_="form-control")}}
+        </div>
+        <div class="inputfield">
+          <!--<label>Phone Number <span style="color:#ff0000">*</span></label>-->
+          {{render_field(form.mob_num, class_="form-control")}}
+        </div> 
+
+        <div class="inputfield">
+          <!--<span style="color:#ff0000">*</span>-->
+          {{render_field(form.name, class_="form-control")}}
+        </div>
+
+        <div class="inputfield">
+          <!--<label>Password</label>-->
+          {{render_field(form.password, class_="form-control")}}
+        </div>
+
+        <div class="inputfield">
+        <!--<label>Password</label>-->
+        {{render_field(form.confirmed, class_="form-control")}}
+        </div>
+
+        <div class="inputfield terms">
+          <label class="check">
+            <input type="checkbox"  onclick="is_visible()">
+            <span class="checkmark"></span>
+          </label>
+          <p>Show Password</p>
+        </div>
+
+        <div class="inputfield terms">
+          <label class="check">
+            <input type="checkbox"  id="priv" onclick="isagree()">
+            <span class="checkmark"></span>
+          </label>
+          <p>I have read and agreed to the <a href="/privacy">privacy policy</a></p>
+        </div> 
+
+        <div class="inputfield">
+          <input type="submit" id="submit_btn" value="SignUp" class="btn">
+        </div>
+
+        <hr style="margin: 4px;">
+        <p style="text-align: center;">have an account ? <a href="/login">Login</a></p>
+
+      </div>
+    </div>
+  </div>
+</form>
+
+
+<script>
+
+  const is_visible = () =>{
+
+    var x=document.getElementById("password");
+    var y=document.getElementById("confirmed");
+    if(x.type === "password"){
+      x.type = "text";
+      y.type= "text";
+    }else{
+      x .type= "password";
+      y.type= "password";
+    }
+  }
+
+</script>
+
+<script>
+  document.getElementById("submit_btn").disabled = true;
+  const isagree = () =>{
+    console.log("hiiii")
+    if(document.getElementById("priv").checked){
+      document.getElementById("submit_btn").disabled = false;
+    }else{
+      document.getElementById("submit_btn").disabled = true;
+    }
+  }
+</script>
+
+{% endblock %}

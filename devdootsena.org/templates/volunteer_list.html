@@ -1,0 +1,141 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+
+<div class="container" style="background-color:white; padding: 2%; margin-top: 1%; margin-bottom: 2%;">
+         
+
+    <form id="volunteer_search">
+        <div class="form-group" style="display: flex; justify-content: space-around;">
+          <div>
+            <label class="form-label">Name: </label>
+            <input type="text" class="form-control" id="filterInput" placeholder="Name" onkeyup="searchinfo()">
+          </div>  
+          <div>
+            <label class="form-label">City: </label>
+            <input type="text" class="form-control" id="filterInput1" placeholder="City" onkeyup="searchinfo()">
+          </div>
+          <div>
+            <label class="form-label">Profession: </label>
+            <input type="text" class="form-control" id="filterInput2" placeholder="Profession" onkeyup="searchinfo()">
+          </div>
+        </div>
+    </form>
+    <br>
+
+
+    <table class="tab">
+      <thead>
+        <tr>
+          <th>S/N</th>
+          <th>Name</th>
+          <th>City</th>
+          <th>Profession</th>
+          {% if admin_number==this_User_num %}
+          <th>Mob Number</th>
+          <th >View</th>
+          {% endif %}
+        </tr>
+      </thead>
+      <tbody id="volTable">
+        {% for vol in v_info %}
+          {% if admin_number==this_User_num %}
+          <tr id="vollistadmin">
+            <td>{{ loop.index }}</td>
+            <td>{{v_info[vol]['name']}}</td>
+            <td>{{v_info[vol]['city']}}</td>
+            <td>{{v_info[vol]['Profession']}}</td>
+            <td>{{v_info[vol]['mob_num']}}</td>
+              <td>
+                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal{{ loop.index }}">
+                  View
+                </button>
+                
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal{{ loop.index }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">{{v_info[vol]['name']}}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body" style="text-align: left;">
+                        <b>City: </b>{{v_info[vol]['city']}}<br>
+                        <b>Profession: </b>{{v_info[vol]['Profession']}}<br>
+                        <b>Mob Number: </b>{{v_info[vol]['mob_num']}}<br>
+                        <b>Email: </b> {{v_info[vol]['email']}}<br>
+                        <b>Blood Group: </b> {{v_info[vol]['BloodGroup']}}<br>
+                        <b>Gender: </b> {{v_info[vol]['Gender']}}<br>
+                        <b>can help in: </b> {{v_info[vol]['helpway']}}<br>
+                        <b> Delete: </b> <form action="/remove_volunteer/{{ vol }}" method="POST" enctype="multipart/form-data">
+                          <button class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </td>
+          </tr>
+          {% else %}
+          <tr id="vollistuser">
+            <td>{{ loop.index }}</td>
+            <td>{{v_info[vol]['name']}}</td>
+            <td>{{v_info[vol]['city']}}</td>
+            <td>{{v_info[vol]['Profession']}}</td>
+          </tr>
+          {% endif %}
+        {% endfor %}
+      </tbody>
+    </table>
+
+  
+  </div>
+
+
+    <script>
+        const searchinfo = () => {
+            let filter=document.getElementById('filterInput').value.toUpperCase();
+            let filter1=document.getElementById('filterInput1').value.toUpperCase();
+            let filter2=document.getElementById('filterInput2').value.toUpperCase();
+
+
+            let t_body = document.getElementById('volTable');
+            let v_info=t_body.getElementsByTagName('tr');
+
+            for (var i=0 ; i<v_info.length ; i++)
+            {
+
+                var t_n=v_info[i].getElementsByTagName('td')[1];
+                var t_name=(t_n.textContent||t_n.innerHTML);
+
+                var t_s=v_info[i].getElementsByTagName('td')[2];
+                var t_city=(t_s.textContent||t_s.innerHTML);
+
+                var t_p=v_info[i].getElementsByTagName('td')[3];
+                var t_proff=(t_p.textContent||t_s.innerHTML);
+
+                if(t_proff.toLocaleUpperCase().indexOf(filter2) > -1){
+                    if (t_city.toLocaleUpperCase().indexOf(filter1) > -1) {
+                        if (t_name.toLocaleUpperCase().indexOf(filter) > -1) {
+                            v_info[i].style.display = ''
+                        } else {
+                            v_info[i].style.display = 'none'
+                        }
+                    } else {
+                        v_info[i].style.display = 'none'
+                    }
+                }else{
+                    v_info[i].style.display='none';
+                }
+            }
+        }
+    </script>
+
+
+{% endblock %}

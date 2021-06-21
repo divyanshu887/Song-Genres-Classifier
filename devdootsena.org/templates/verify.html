@@ -1,0 +1,51 @@
+{% extends 'signup-login-layout.html' %}
+
+{% block body %}
+
+
+{% from "includes/_formhelpers.html" import render_field %}
+
+
+
+<!-- <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+<div class="container"> -->
+
+
+<form action="/verifyOTP" method="POST" enctype="multipart/form-data">
+  <div class="ovf">
+    <div class="wrapper">
+      {% include 'includes/_messages.html' %}
+      <div class="title">
+        Verification
+      </div>
+      <div class="form">
+         <div class="inputfield">
+        
+            <label>Enter your OTP</label>
+            <input type="text" class="input" name="otp">
+          
+         </div>  
+        <div class="inputfield">
+          <input type="submit" value="Verify" class="btn">
+        </div>
+      </div>
+      <p style="text-align: center; padding-top: 1rem;">
+        <a style="text-align: center;" href="/resendOTP">Resend OTP</a>
+      </p>
+  </div>
+  </div>
+
+</form>
+
+
+<!--<div clas="inputfield" style="text-align: center;">
+  <b><button type="submit" class="btn btn-dabger"><a href="/resendOTP">Resend OTP</a></button></b>
+</div>-->
+
+<!-- </div> -->
+
+
+
+
+
+{% endblock %}
